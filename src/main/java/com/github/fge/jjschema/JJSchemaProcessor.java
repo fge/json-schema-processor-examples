@@ -9,8 +9,11 @@ import com.github.fge.jsonschema.report.LogLevel;
 import com.github.fge.jsonschema.report.ProcessingMessage;
 import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.tree.CanonicalSchemaTree;
+import com.github.fge.util.PrettyPrinter;
 import com.github.reinert.jjschema.JsonSchemaGenerator;
 import com.github.reinert.jjschema.SchemaGeneratorBuilder;
+
+import java.io.IOException;
 
 public final class JJSchemaProcessor
     implements Processor<ClassHolder, SchemaHolder>
@@ -30,7 +33,7 @@ public final class JJSchemaProcessor
     }
 
     public static void main(final String... args)
-        throws ProcessingException
+        throws ProcessingException, IOException
     {
         final Processor<ClassHolder, SchemaHolder> processor
             = new JJSchemaProcessor();
@@ -39,6 +42,7 @@ public final class JJSchemaProcessor
             = new ConsoleProcessingReport(LogLevel.DEBUG, LogLevel.FATAL);
 
         final SchemaHolder output = processor.process(report, input);
-        System.out.println(output.getValue().getBaseNode());
+        final JsonNode node = output.getValue().getBaseNode();
+        System.out.println(PrettyPrinter.prettyPrint(node));
     }
 }
