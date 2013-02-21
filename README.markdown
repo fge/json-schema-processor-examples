@@ -10,7 +10,15 @@ href="https://github.com/fge/json-schema-core">json-schema-core</a>.</p>
 
 <h2>List of processors</h2>
 
-<p>TODO</p>
+<h3>Java class to JSON Schema</h3>
+
+<a
+href="https://github.com/fge/json-schema-processor-examples/blob/master/src/main/java/com/github/fge/jjschema/JJSchemaProcessor.java">link
+to source code</a>
+
+This processor highlights a very simple use of <a
+href="https://github.com/reinert/JJSchema">JJSchema</a> to generate a JSON Schema (as a `JsonNode`)
+from a class.
 
 <h2>Maven artifact</h2>
 
