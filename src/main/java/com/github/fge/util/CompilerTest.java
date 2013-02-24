@@ -1,8 +1,9 @@
 package com.github.fge.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.fge.compiler.CompilerOutput;
+import com.github.fge.compiler.CompilerOutputDirectory;
 import com.github.fge.compiler.CompilerProcessor;
-import com.github.fge.jjschema.ClassHolder;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.report.ConsoleProcessingReport;
 import com.github.fge.jsonschema.report.LogLevel;
@@ -32,8 +33,14 @@ public final class CompilerTest
         final CompilerProcessor processor = new CompilerProcessor();
         final ProcessingReport report
             = new ConsoleProcessingReport(LogLevel.DEBUG, LogLevel.NONE);
-        final ClassHolder output = processor.process(report, input);
-        System.out.println(output.getValue().getCanonicalName());
+        final CompilerOutput output = processor.process(report, input);
+        final CompilerOutputDirectory directory = output.getDirectory();
+        final Class<?> c = directory.getGeneratedClass();
+        System.out.println(c.getCanonicalName());
+        final File dir = new File(directory.getDirectory());
+        if (!rmDashRf(dir))
+            System.err.println("Cannot remove " + dir);
+
 
     }
 
@@ -51,5 +58,16 @@ public final class CompilerTest
         {
             return FACTORY.textNode(value);
         }
+    }
+
+    private static boolean rmDashRf(final File file)
+    {
+        if (file.isDirectory())
+            for (final File f: file.listFiles())
+                if (!rmDashRf(f))
+                    return false;
+
+
+        return file.delete();
     }
 }

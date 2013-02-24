@@ -1,13 +1,11 @@
 package com.github.fge.compiler;
 
-import com.github.fge.jjschema.ClassHolder;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.processing.Processor;
 import com.github.fge.jsonschema.report.ProcessingMessage;
 import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.util.ValueHolder;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
@@ -17,12 +15,11 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class CompilerProcessor
-    implements Processor<ValueHolder<String>, ClassHolder>
+    implements Processor<ValueHolder<String>, CompilerOutput>
 {
     private static final JavaCompiler COMPILER
         = ToolProvider.getSystemJavaCompiler();
@@ -51,7 +48,7 @@ public final class CompilerProcessor
         Pattern.MULTILINE);
 
     @Override
-    public ClassHolder process(final ProcessingReport report,
+    public CompilerOutput process(final ProcessingReport report,
         final ValueHolder<String> input)
         throws ProcessingException
     {
@@ -91,34 +88,19 @@ public final class CompilerProcessor
         }
 
         /*
-         * Create the Iterable
-         */
-        final Set<JavaFileObject> set = ImmutableSet.of(fileObject);
-
-        /*
-         * Create the diagnostic listener
-         */
-        final DiagnosticsReporting reporting = new DiagnosticsReporting();
-
-        /*
          * Create the compiler output directory and relevant options
          */
-        final CompilerOutput output = new CompilerOutput(fullName);
+        final CompilerOutputDirectory outputDirectory
+            = new CompilerOutputDirectory(fullName);
 
-        final List<String> options
-            = ImmutableList.of("-d", output.getDirectory());
+        final CompilerOutput output = new CompilerOutput(outputDirectory);
 
-        final JavaCompiler.CompilationTask task = COMPILER.getTask(
-            DevNull.getInstance(), FILE_MANAGER, reporting, options, null, set);
+        final boolean success = doCompile(output, fileObject, report);
 
-        final Boolean compilationSuccess = task.call();
-
-        report.mergeWith(reporting.getReport());
-
-        if (!compilationSuccess)
+        if (!success)
             throw new CompilingException(COMPILE_FAILURE);
 
-        return new ClassHolder(output.getGeneratedClass());
+        return output;
     }
 
     private static String extractPkgName(final String source)
@@ -131,5 +113,23 @@ public final class CompilerProcessor
     {
         final Matcher m = CLASSNAME_PATTERN.matcher(source);
         return m.find() ? m.group(1) : null;
+    }
+
+    private static boolean doCompile(final CompilerOutput output,
+        final JavaFileObject fileObject, final ProcessingReport report)
+        throws ProcessingException
+    {
+        final String directory = output.getDirectory().getDirectory();
+        final List<String> options = ImmutableList.of("-d", directory);
+        final DiagnosticsReporting reporting = new DiagnosticsReporting();
+
+        final JavaCompiler.CompilationTask task
+            = COMPILER.getTask(DevNull.getInstance(), FILE_MANAGER, reporting,
+            options, null, ImmutableList.of(fileObject));
+
+        final boolean ret = task.call();
+
+        report.mergeWith(reporting.getReport());
+        return ret;
     }
 }

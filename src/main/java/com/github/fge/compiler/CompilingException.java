@@ -6,6 +6,11 @@ import com.github.fge.jsonschema.report.ProcessingMessage;
 public final class CompilingException
     extends ProcessingException
 {
+    public CompilingException(final ProcessingMessage message)
+    {
+        super(message);
+    }
+
     public CompilingException(final String message)
     {
         super(message);
