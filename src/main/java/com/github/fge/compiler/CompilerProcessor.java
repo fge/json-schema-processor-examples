@@ -95,10 +95,7 @@ public final class CompilerProcessor
 
         final CompilerOutput output = new CompilerOutput(outputDirectory);
 
-        final boolean success = doCompile(output, fileObject, report);
-
-        if (!success)
-            throw new CompilingException(COMPILE_FAILURE);
+        doCompile(output, fileObject, report);
 
         return output;
     }
@@ -115,7 +112,7 @@ public final class CompilerProcessor
         return m.find() ? m.group(1) : null;
     }
 
-    private static boolean doCompile(final CompilerOutput output,
+    private static void doCompile(final CompilerOutput output,
         final JavaFileObject fileObject, final ProcessingReport report)
         throws ProcessingException
     {
@@ -127,9 +124,7 @@ public final class CompilerProcessor
             = COMPILER.getTask(DevNull.getInstance(), FILE_MANAGER, reporting,
             options, null, ImmutableList.of(fileObject));
 
-        final boolean ret = task.call();
-
+        task.call();
         report.mergeWith(reporting.getReport());
-        return ret;
     }
 }
