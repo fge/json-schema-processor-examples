@@ -35,5 +35,10 @@ public final class CompilerTest
         if (report.isSuccess())
             System.out.println(JacksonUtils.prettyPrint(output.getValue()
                 .getBaseNode()));
+
+        processor.process(report, input);
+        if (report.isSuccess())
+            System.out.println(JacksonUtils.prettyPrint(output.getValue()
+                .getBaseNode()));
     }
 }

@@ -23,13 +23,6 @@ public final class CompilerProcessor
 {
     private static final JavaCompiler COMPILER
         = ToolProvider.getSystemJavaCompiler();
-    private static final StandardJavaFileManager FILE_MANAGER;
-
-    static {
-        FILE_MANAGER = COMPILER == null ? null
-            : COMPILER.getStandardFileManager(null, Locale.getDefault(),
-                Charset.forName("UTF-8"));
-    }
 
     private static final String CANNOT_FIND_COMPILER
         = "cannot find system compiler (do you have a JDK installed?)";
@@ -120,8 +113,11 @@ public final class CompilerProcessor
         final List<String> options = ImmutableList.of("-d", directory);
         final DiagnosticsReporting reporting = new DiagnosticsReporting();
 
+        final StandardJavaFileManager manager
+            = COMPILER.getStandardFileManager(null, Locale.ENGLISH,
+                Charset.forName("UTF-8"));
         final JavaCompiler.CompilationTask task
-            = COMPILER.getTask(DevNull.getInstance(), FILE_MANAGER, reporting,
+            = COMPILER.getTask(DevNull.getInstance(), manager, reporting,
             options, null, ImmutableList.of(fileObject));
 
         task.call();
