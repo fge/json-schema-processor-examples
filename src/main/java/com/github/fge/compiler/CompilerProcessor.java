@@ -32,7 +32,6 @@ public final class CompilerProcessor
         = "cannot extract class name from source";
     private static final String CANNOT_BUILD_URI
         = "cannot build URI from class name";
-    private static final String COMPILE_FAILURE = "compilation failed";
 
     private static final Pattern PACKAGE_PATTERN
         = Pattern.compile("^package\\s+(\\w+(\\.\\w+)*);", Pattern.MULTILINE);
