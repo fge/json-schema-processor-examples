@@ -3,7 +3,7 @@
 <p>The license of this project is LGPLv3 or later. See file src/main/resources/LICENSE for the full
 text.</p>
 
-<p>The current version is <b>0.1</b>. Note however that the list of processors reflects the one in
+<p>The current version is <b>0.2</b>. Note however that the list of processors reflects the one in
 <tt>master</tt>.</p>
 
 <h1>What this is</h1>
