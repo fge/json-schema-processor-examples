@@ -1,6 +1,8 @@
 {
     "type": "object",
     "properties": {
-        "foo": { "type": "integer" }
-    }
+        "foo": { "type": "integer" },
+        "bar": { "enum": [ "one", "two" ] }
+    },
+    "additionalProperties": false
 }
