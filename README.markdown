@@ -3,6 +3,9 @@
 <p>The license of this project is LGPLv3 or later. See file src/main/resources/LICENSE for the full
 text.</p>
 
+<p>The current version is <b>0.1</b>. Note however that the list of processors reflects the one in
+<tt>master</tt>.</p>
+
 <h1>What this is</h1>
 
 <p>This package contains sample demonstration processors based on <a
@@ -56,6 +59,19 @@ to source code</a>
 
 <p>This processor combines the compiler processor (which generates a class from a Java source as a
 string) and the first processor of this section to generate a JSON Schema directly.</p>
+
+<h2>Processors using <a
+href="https://github.com/joelittlejohn/jsonschema2pojo">jsonschema2pojo</a></h2>
+
+<h3>JSON Schema to source code</h3>
+
+<a
+href="https://github.com/fge/json-schema-processor-examples/blob/master/src/main/java/com/github/fge/jsonschema2pojo/JsonSchema2SourceCode.java">link
+to source code</a>
+
+<p>This processor first goes through a syntax checker which checks that the schema is draft v3
+(since jsonschema2pojo does not support v4 yet), then generates a source file (as a string). Right
+now, the generated package name and class name are fixed.</p>
 
 <h1>Maven artifact</h1>
 
