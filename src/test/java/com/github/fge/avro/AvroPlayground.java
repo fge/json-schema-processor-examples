@@ -13,7 +13,9 @@ public final class AvroPlayground
         final String input = JsonLoader.fromResource("/t.json").toString();
         final Schema avroSchema = new Schema.Parser().parse(input);
         System.out.println(avroSchema.getType());
-        System.out.println(avroSchema.getFullName());
-        System.out.println(avroSchema.getElementType().getType());
+        for (final Schema sub : avroSchema.getTypes()) {
+            System.out.println(sub.getType());
+        }
+
     }
 }

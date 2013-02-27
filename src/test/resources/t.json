@@ -1,8 +1,13 @@
-{
-    "type": "array",
-    "items": {
-        "type": "enum",
-        "symbols": [ "a", "b" ],
-        "name": "c"
+[
+    {
+        "type": "string"
+    },
+    "boolean",
+    {
+        "type": "map",
+        "values": {
+            "type": "array",
+            "items": "long"
+        }
     }
-}
+]

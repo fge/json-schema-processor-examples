@@ -74,6 +74,10 @@ public final class AvroTranslators
         translator = ArrayTranslator.getInstance();
         builder.put(avroType, translator);
 
+        avroType = Schema.Type.UNION;
+        translator = UnionTranslator.getInstance();
+        builder.put(avroType, translator);
+
         TRANSLATORS = builder.build();
     }
 
