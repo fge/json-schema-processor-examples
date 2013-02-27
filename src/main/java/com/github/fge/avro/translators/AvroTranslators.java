@@ -66,6 +66,10 @@ public final class AvroTranslators
         translator = FixedTranslator.getInstance();
         builder.put(avroType, translator);
 
+        avroType = Schema.Type.ENUM;
+        translator = EnumTranslator.getInstance();
+        builder.put(avroType, translator);
+
         TRANSLATORS = builder.build();
     }
 

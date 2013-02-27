@@ -1,7 +1,5 @@
 {
     "name": "meh",
-    "namespace": "I.say",
-    "aliases": [ "foo.bar", "yes" ],
-    "size": 42,
-    "type": "fixed"
+    "type": "enum",
+    "symbols": [ "foo", "bar" ]
 }
