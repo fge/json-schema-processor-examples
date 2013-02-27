@@ -18,6 +18,7 @@ public final class AvroPlayground
         for (final Schema schema : field.schema().getTypes()) {
             System.out.println(schema.getType());
         }
+        System.out.println(avroSchema.getField("value").defaultValue());
 
     }
 }

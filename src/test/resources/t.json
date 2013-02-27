@@ -5,7 +5,8 @@
     "fields": [
         {
             "name": "value",
-            "type": "long"
+            "type": "long",
+            "default": 3
         },
         {
             "name": "next",
