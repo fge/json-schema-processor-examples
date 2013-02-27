@@ -1,0 +1,70 @@
+package com.github.fge.avro;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.fge.jsonschema.exceptions.ProcessingException;
+import com.github.fge.jsonschema.processors.data.SchemaHolder;
+import com.github.fge.jsonschema.report.DevNullProcessingReport;
+import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.tree.JsonTree;
+import com.github.fge.jsonschema.tree.SimpleJsonTree;
+import com.github.fge.jsonschema.util.JsonLoader;
+import com.github.fge.jsonschema.util.ValueHolder;
+import com.github.fge.util.SimpleValueHolder;
+import com.google.common.collect.Lists;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+
+public abstract class Avro2JsonSchemaConverterTest
+{
+    private static final Avro2JsonSchemaConverter PROCESSOR
+        = new Avro2JsonSchemaConverter();
+
+    private final JsonNode testNode;
+
+    private ProcessingReport report;
+
+    protected Avro2JsonSchemaConverterTest(final String name)
+        throws IOException
+    {
+        testNode = JsonLoader.fromResource("/avro/" + name + ".json");
+    }
+
+    @BeforeMethod
+    public final void init()
+    {
+        report = new DevNullProcessingReport();
+    }
+
+    @DataProvider
+    public final Iterator<Object[]> testData()
+    {
+        final List<Object[]> list = Lists.newArrayList();
+
+        for (final JsonNode element: testNode)
+            list.add(new Object[] {
+                element.get("avroSchema"),
+                element.get("jsonSchema")
+            });
+
+        return list.iterator();
+    }
+
+    @Test(dataProvider = "testData")
+    public final void conversionIsCorrectlyPerformed(final JsonNode avroSchema,
+        final JsonNode jsonSchema)
+        throws ProcessingException
+    {
+        final ValueHolder<JsonTree> input
+            = new SimpleValueHolder<JsonTree>(new SimpleJsonTree(avroSchema));
+
+        final SchemaHolder output = PROCESSOR.process(report, input);
+        assertEquals(output.getValue().getBaseNode(), jsonSchema);
+    }
+}
