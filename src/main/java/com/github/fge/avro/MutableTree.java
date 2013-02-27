@@ -47,14 +47,23 @@ public final class MutableTree
         currentNode = (ObjectNode) pointer.get(baseNode);
     }
 
-    public JsonPointer createDefinition(final String name)
+    public boolean hasDefinition(final String name)
     {
-        if (!baseNode.has("definitions"))
+        boolean ret = true;
+
+        if (!baseNode.has("definitions")) {
+            ret = false;
             baseNode.put("definitions", FACTORY.objectNode());
+        }
 
         final ObjectNode definitions = (ObjectNode) baseNode.get("definitions");
-        definitions.put(name, FACTORY.objectNode());
-        return JsonPointer.of("definitions", name);
+
+        if (!definitions.has(name)) {
+            ret = false;
+            definitions.put(name, FACTORY.objectNode());
+        }
+
+        return ret;
     }
 
     @Override

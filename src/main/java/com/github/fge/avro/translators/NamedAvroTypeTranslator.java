@@ -29,15 +29,18 @@ public abstract class NamedAvroTypeTranslator
         final JsonPointer pwd = jsonSchema.getPointer();
         final String avroName = avroSchema.getFullName();
         final String fullName = typeName + ':' + avroName;
-        final JsonPointer def = jsonSchema.createDefinition(fullName);
-        jsonSchema.setPointer(def);
-        doTranslate(avroSchema, jsonSchema, report);
-        jsonSchema.setPointer(pwd);
-        jsonSchema.getCurrentNode().put("$ref", createRef(def));
+        final JsonPointer ptr = JsonPointer.of("definitions", fullName);
+        if (!jsonSchema.hasDefinition(fullName)) {
+            jsonSchema.setPointer(ptr);
+            doTranslate(avroSchema, jsonSchema, report);
+            jsonSchema.setPointer(pwd);
+        }
+        jsonSchema.getCurrentNode().put("$ref", createRef(ptr));
     }
 
     protected abstract void doTranslate(final Schema avroSchema,
-        final MutableTree jsonSchema, final ProcessingReport report);
+        final MutableTree jsonSchema, final ProcessingReport report)
+        throws ProcessingException;
 
     private static String createRef(final JsonPointer pointer)
     {

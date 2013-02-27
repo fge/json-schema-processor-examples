@@ -1,13 +1,16 @@
-[
-    {
-        "type": "string"
-    },
-    "boolean",
-    {
-        "type": "map",
-        "values": {
-            "type": "array",
-            "items": "long"
+{
+    "type": "record",
+    "name": "LongList",
+    "aliases": ["LinkedLongs"],
+    "fields": [
+        {
+            "name": "value",
+            "type": "long"
+        },
+        {
+            "name": "next",
+            "type": ["LongList", "null"]
         }
-    }
-]
+    ]
+}
+

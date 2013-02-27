@@ -1,0 +1,42 @@
+[
+    {
+        "avroSchema": {
+            "type": "record",
+            "name": "LongList",
+            "aliases": ["LinkedLongs"],
+            "fields": [
+                {
+                    "name": "value",
+                    "type": "long"
+                },
+                {
+                    "name": "next",
+                    "type": ["LongList", "null"]
+                }
+            ]
+        },
+        "jsonSchema": {
+            "$ref": "#/definitions/record:LongList",
+            "definitions": {
+                "record:LongList": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [ "value", "next" ],
+                    "properties": {
+                        "value": {
+                            "type": "integer",
+                            "minimum": -9223372036854775808,
+                            "maximum": 9223372036854775807
+                        },
+                        "next": {
+                            "oneOf": [
+                                { "$ref": "#/definitions/record:LongList" },
+                                { "type": "null" }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+]
