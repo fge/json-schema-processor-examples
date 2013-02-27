@@ -1,15 +1,18 @@
 package com.github.fge.avro;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jsonschema.jsonpointer.JsonPointer;
+import com.github.fge.jsonschema.util.AsJson;
 import com.github.fge.jsonschema.util.JacksonUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.jcip.annotations.NotThreadSafe;
 
 @NotThreadSafe
-final class MutableTree
+public final class MutableTree
+    implements AsJson
 {
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
@@ -22,12 +25,12 @@ final class MutableTree
     private final Multimap<JsonPointer, String> names
         = ArrayListMultimap.create();
 
-    void put(final String fieldName, final String value)
+    public void put(final String fieldName, final String value)
     {
         baseNode.put(fieldName, value);
     }
 
-    ObjectNode getBaseNode()
+    public ObjectNode getBaseNode()
     {
         return baseNode;
     }
@@ -35,6 +38,12 @@ final class MutableTree
     public ObjectNode getCurrentNode()
     {
         return currentNode;
+    }
+
+    @Override
+    public JsonNode asJson()
+    {
+        return FACTORY.objectNode().put("pointer", pointer.toString());
     }
 }
 

@@ -1,11 +1,11 @@
-package com.github.fge.avro;
+package com.github.fge.avro.translators;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.avro.Schema;
 
 import java.util.Map;
 
-final class AvroTranslators
+public final class AvroTranslators
 {
     private static final Map<Schema.Type, AvroTranslator> TRANSLATORS;
 
@@ -34,6 +34,7 @@ final class AvroTranslators
 
         // Reuse for "bytes"
         avroType = Schema.Type.BYTES;
+        translator = ByteTranslator.getInstance();
         builder.put(avroType, translator);
 
         avroType = Schema.Type.INT;
@@ -55,7 +56,7 @@ final class AvroTranslators
         TRANSLATORS = builder.build();
     }
 
-    static Map<Schema.Type, AvroTranslator> get()
+    public static Map<Schema.Type, AvroTranslator> get()
     {
         return TRANSLATORS;
     }
