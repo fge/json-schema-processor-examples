@@ -1,5 +1,8 @@
 {
-    "name": "meh",
-    "type": "enum",
-    "symbols": [ "foo", "bar" ]
+    "type": "array",
+    "items": {
+        "type": "enum",
+        "symbols": [ "a", "b" ],
+        "name": "c"
+    }
 }

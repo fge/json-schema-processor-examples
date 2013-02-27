@@ -70,6 +70,10 @@ public final class AvroTranslators
         translator = EnumTranslator.getInstance();
         builder.put(avroType, translator);
 
+        avroType = Schema.Type.ARRAY;
+        translator = ArrayTranslator.getInstance();
+        builder.put(avroType, translator);
+
         TRANSLATORS = builder.build();
     }
 

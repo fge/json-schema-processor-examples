@@ -14,6 +14,6 @@ public final class AvroPlayground
         final Schema avroSchema = new Schema.Parser().parse(input);
         System.out.println(avroSchema.getType());
         System.out.println(avroSchema.getFullName());
-        System.out.println(avroSchema.getEnumSymbols());
+        System.out.println(avroSchema.getElementType().getType());
     }
 }
