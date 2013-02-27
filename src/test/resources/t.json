@@ -1,4 +1,7 @@
 {
-    "type": "map",
-    "values": { "type": "string" }
+    "name": "meh",
+    "namespace": "I.say",
+    "aliases": [ "foo.bar", "yes" ],
+    "size": 42,
+    "type": "fixed"
 }

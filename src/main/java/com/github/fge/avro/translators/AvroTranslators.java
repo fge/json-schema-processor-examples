@@ -62,6 +62,10 @@ public final class AvroTranslators
         translator = MapTranslator.getInstance();
         builder.put(avroType, translator);
 
+        avroType = Schema.Type.FIXED;
+        translator = FixedTranslator.getInstance();
+        builder.put(avroType, translator);
+
         TRANSLATORS = builder.build();
     }
 
