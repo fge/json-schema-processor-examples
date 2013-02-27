@@ -21,16 +21,16 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-public abstract class Avro2JsonSchemaConverterTest
+public abstract class Avro2JsonSchemaProcessorTest
 {
-    private static final Avro2JsonSchemaConverter PROCESSOR
-        = new Avro2JsonSchemaConverter();
+    private static final Avro2JsonSchemaProcessor PROCESSOR
+        = new Avro2JsonSchemaProcessor();
 
     private final JsonNode testNode;
 
     private ProcessingReport report;
 
-    protected Avro2JsonSchemaConverterTest(final String name)
+    protected Avro2JsonSchemaProcessorTest(final String name)
         throws IOException
     {
         testNode = JsonLoader.fromResource("/avro/" + name + ".json");

@@ -2,12 +2,12 @@ package com.github.fge.avro;
 
 import java.io.IOException;
 
-public final class SimpleTypeConverterTest
+public final class SimpleRawTypeConverterTest
     extends Avro2JsonSchemaProcessorTest
 {
-    public SimpleTypeConverterTest()
+    public SimpleRawTypeConverterTest()
         throws IOException
     {
-        super("simple");
+        super("simpleRaw");
     }
 }
