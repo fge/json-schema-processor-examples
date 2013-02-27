@@ -2,5 +2,41 @@
     {
         "avroSchema": { "type": "null" },
         "jsonSchema": { "type": "null" }
+    },
+    {
+        "avroSchema": { "type": "boolean" },
+        "jsonSchema": { "type": "boolean" }
+    },
+    {
+        "avroSchema": { "type": "int" },
+        "jsonSchema": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+        }
+    },
+    {
+        "avroSchema": { "type": "long" },
+        "jsonSchema": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+        }
+    },
+    {
+        "avroSchema": { "type": "float" },
+        "jsonSchema": { "type": "number" }
+    },
+    {
+        "avroSchema": { "type": "double" },
+        "jsonSchema": { "type": "number" }
+    },
+    {
+        "avroSchema": { "type": "bytes" },
+        "jsonSchema": { "type": "string" }
+    },
+    {
+        "avroSchema": { "type": "string" },
+        "jsonSchema": { "type": "string" }
     }
 ]
