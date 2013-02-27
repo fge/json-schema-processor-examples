@@ -1,9 +1,14 @@
 package com.github.fge.avro.translators;
 
+import com.github.fge.avro.UnsupportedAvroSchemaException;
+import com.github.fge.jsonschema.report.ProcessingMessage;
+import com.github.fge.jsonschema.util.NodeType;
 import com.google.common.collect.ImmutableMap;
 import org.apache.avro.Schema;
 
 import java.util.Map;
+
+import static com.github.fge.avro.messages.Avro2JsonSchemaMessages.*;
 
 public final class AvroTranslators
 {
@@ -21,15 +26,15 @@ public final class AvroTranslators
         AvroTranslator translator;
 
         avroType = Schema.Type.NULL;
-        translator = new SimpleTypeTranslator("null");
+        translator = new SimpleTypeTranslator(NodeType.NULL);
         builder.put(avroType, translator);
 
         avroType = Schema.Type.BOOLEAN;
-        translator = new SimpleTypeTranslator("boolean");
+        translator = new SimpleTypeTranslator(NodeType.BOOLEAN);
         builder.put(avroType, translator);
 
         avroType = Schema.Type.STRING;
-        translator = new SimpleTypeTranslator("string");
+        translator = new SimpleTypeTranslator(NodeType.STRING);
         builder.put(avroType, translator);
 
         // Reuse for "bytes"
@@ -46,18 +51,27 @@ public final class AvroTranslators
         builder.put(avroType, translator);
 
         avroType = Schema.Type.FLOAT;
-        translator = new SimpleTypeTranslator("number");
+        translator = new SimpleTypeTranslator(NodeType.NUMBER);
         builder.put(avroType, translator);
 
         // Reuse for "double"
         avroType = Schema.Type.DOUBLE;
         builder.put(avroType, translator);
 
+        avroType = Schema.Type.MAP;
+        translator = MapTranslator.getInstance();
+        builder.put(avroType, translator);
+
         TRANSLATORS = builder.build();
     }
 
-    public static Map<Schema.Type, AvroTranslator> get()
+    public static AvroTranslator getTranslator(final Schema.Type avroType)
+        throws UnsupportedAvroSchemaException
     {
-        return TRANSLATORS;
+        final AvroTranslator ret = TRANSLATORS.get(avroType);
+        if (ret == null)
+            throw new UnsupportedAvroSchemaException(new ProcessingMessage()
+                .message(UNSUPPORTED_TYPE).put("type", avroType));
+        return ret;
     }
 }

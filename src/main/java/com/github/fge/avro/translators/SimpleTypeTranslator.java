@@ -3,16 +3,17 @@ package com.github.fge.avro.translators;
 import com.github.fge.avro.MutableTree;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.util.NodeType;
 import org.apache.avro.Schema;
 
 final class SimpleTypeTranslator
     extends AvroTranslator
 {
-    private final String typeName;
+    private final NodeType type ;
 
-    SimpleTypeTranslator(final String typeName)
+    SimpleTypeTranslator(final NodeType type)
     {
-        this.typeName = typeName;
+        this.type = type;
     }
 
     @Override
@@ -20,6 +21,6 @@ final class SimpleTypeTranslator
         final ProcessingReport report)
         throws ProcessingException
     {
-        jsonSchema.put("type", typeName);
+        jsonSchema.setType(type);
     }
 }

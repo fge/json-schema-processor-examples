@@ -3,6 +3,7 @@ package com.github.fge.avro.translators;
 import com.github.fge.avro.MutableTree;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.util.NodeType;
 import org.apache.avro.Schema;
 
 public final class ByteTranslator
@@ -26,7 +27,7 @@ public final class ByteTranslator
         final ProcessingReport report)
         throws ProcessingException
     {
-        jsonSchema.getCurrentNode().put("type", "string")
-            .put("pattern", BYTES_PATTERN);
+        jsonSchema.setType(NodeType.STRING);
+        jsonSchema.getCurrentNode().put("pattern", BYTES_PATTERN);
     }
 }

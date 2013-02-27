@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jsonschema.jsonpointer.JsonPointer;
 import com.github.fge.jsonschema.util.AsJson;
 import com.github.fge.jsonschema.util.JacksonUtils;
+import com.github.fge.jsonschema.util.NodeType;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.jcip.annotations.NotThreadSafe;
@@ -25,9 +26,9 @@ public final class MutableTree
     private final Multimap<JsonPointer, String> names
         = ArrayListMultimap.create();
 
-    public void put(final String fieldName, final String value)
+    public void setType(final NodeType type)
     {
-        baseNode.put(fieldName, value);
+        currentNode.put("type", type.toString());
     }
 
     public ObjectNode getBaseNode()
@@ -38,6 +39,17 @@ public final class MutableTree
     public ObjectNode getCurrentNode()
     {
         return currentNode;
+    }
+
+    public JsonPointer getPointer()
+    {
+        return pointer;
+    }
+
+    public void setPointer(final JsonPointer pointer)
+    {
+        this.pointer = pointer;
+        currentNode = (ObjectNode) pointer.get(baseNode);
     }
 
     @Override

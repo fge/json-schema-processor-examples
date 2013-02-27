@@ -1,9 +1,9 @@
 package com.github.fge.avro.translators;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.avro.MutableTree;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.util.NodeType;
 import org.apache.avro.Schema;
 
 final class IntTranslator
@@ -25,9 +25,8 @@ final class IntTranslator
         final ProcessingReport report)
         throws ProcessingException
     {
-        final ObjectNode node = jsonSchema.getCurrentNode();
-        node.put("type", "integer");
-        node.put("minimum", Integer.MIN_VALUE);
-        node.put("maximum", Integer.MAX_VALUE);
+        jsonSchema.setType(NodeType.INTEGER);
+        jsonSchema.getCurrentNode().put("minimum", Integer.MIN_VALUE)
+            .put("maximum", Integer.MAX_VALUE);
     }
 }
