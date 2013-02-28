@@ -8,7 +8,7 @@ import org.apache.avro.Schema;
 public final class FixedTranslator
     extends NamedAvroTypeTranslator
 {
-    private static final String BYTES_PATTERN = "^[\\u0000-\\u00ff]*$";
+    private static final String BYTES_PATTERN = "^[\u0000-\u00ff]*$";
 
     private static final AvroTranslator INSTANCE = new FixedTranslator();
 

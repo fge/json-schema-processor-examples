@@ -35,7 +35,7 @@
         "avroSchema": "bytes",
         "jsonSchema": {
             "type": "string",
-            "pattern": "^[\\u0000-\\u00ff]*$"
+            "pattern": "^[\u0000-\u00ff]*$"
         }
     },
     {

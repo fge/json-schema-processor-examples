@@ -9,7 +9,7 @@ import org.apache.avro.Schema;
 public final class ByteTranslator
     extends AvroTranslator
 {
-    private static final String BYTES_PATTERN = "^[\\u0000-\\u00ff]*$";
+    private static final String BYTES_PATTERN = "^[\u0000-\u00ff]*$";
 
     private static final AvroTranslator INSTANCE = new ByteTranslator();
 

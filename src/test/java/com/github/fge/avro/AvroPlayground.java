@@ -1,6 +1,7 @@
 package com.github.fge.avro;
 
 import com.github.fge.jsonschema.util.JsonLoader;
+import com.github.fge.jsonschema.util.RhinoHelper;
 import org.apache.avro.Schema;
 
 import java.io.IOException;
@@ -12,13 +13,10 @@ public final class AvroPlayground
     {
         final String input = JsonLoader.fromResource("/t.json").toString();
         final Schema avroSchema = new Schema.Parser().parse(input);
-        System.out.println(avroSchema.getType());
-        System.out.println(avroSchema.getFields());
-        final Schema.Field field = avroSchema.getField("next");
-        for (final Schema schema : field.schema().getTypes()) {
-            System.out.println(schema.getType());
-        }
-        System.out.println(avroSchema.getField("value").defaultValue());
-
+        final Schema.Field field = avroSchema.getField("recordField");
+        System.out.println(field.schema().getFullName());
+        final String regex = "^[\u0000-\u00ff]*$";
+        System.out.println(RhinoHelper.regexIsValid(regex));
+        System.out.println(RhinoHelper.regMatch(regex, "hello"));
     }
 }

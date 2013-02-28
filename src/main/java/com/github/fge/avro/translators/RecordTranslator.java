@@ -57,6 +57,9 @@ public final class RecordTranslator
         final ArrayNode required = FACTORY.arrayNode();
         jsonSchema.getCurrentNode().put("required", required);
 
+        if (avroSchema.getDoc() != null)
+            jsonSchema.getCurrentNode().put("description", avroSchema.getDoc());
+
         String fieldName;
         Schema fieldSchema;
         Schema.Type fieldType;

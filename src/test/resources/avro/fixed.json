@@ -10,7 +10,7 @@
             "definitions": {
                 "fixed:md5": {
                     "type": "string",
-                    "pattern": "^[\\u0000-\\u00ff]*$",
+                    "pattern": "^[\u0000-\u00ff]*$",
                     "minLength": 16,
                     "maxLength": 16
                 }
@@ -34,7 +34,7 @@
             "definitions": {
                 "fixed:md5": {
                     "type": "string",
-                    "pattern": "^[\\u0000-\\u00ff]*$",
+                    "pattern": "^[\u0000-\u00ff]*$",
                     "minLength": 16,
                     "maxLength": 16
                 }
