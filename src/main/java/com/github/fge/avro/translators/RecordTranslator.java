@@ -48,17 +48,18 @@ public final class RecordTranslator
 
         final JsonPointer pwd = jsonSchema.getPointer();
 
-        jsonSchema.setType(NodeType.OBJECT);
-        jsonSchema.getCurrentNode().put("additionalProperties", false);
+        if (avroSchema.getDoc() != null)
+            jsonSchema.getCurrentNode().put("description", avroSchema.getDoc());
 
-        final ObjectNode properties = FACTORY.objectNode();
-        jsonSchema.getCurrentNode().put("properties", properties);
+        jsonSchema.setType(NodeType.OBJECT);
 
         final ArrayNode required = FACTORY.arrayNode();
         jsonSchema.getCurrentNode().put("required", required);
 
-        if (avroSchema.getDoc() != null)
-            jsonSchema.getCurrentNode().put("description", avroSchema.getDoc());
+        jsonSchema.getCurrentNode().put("additionalProperties", false);
+
+        final ObjectNode properties = FACTORY.objectNode();
+        jsonSchema.getCurrentNode().put("properties", properties);
 
         String fieldName;
         Schema fieldSchema;

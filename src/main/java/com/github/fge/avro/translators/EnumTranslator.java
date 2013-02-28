@@ -24,6 +24,9 @@ public final class EnumTranslator
     protected void doTranslate(final Schema avroSchema,
         final MutableTree jsonSchema, final ProcessingReport report)
     {
+        if (avroSchema.getDoc() != null)
+            jsonSchema.getCurrentNode().put("description", avroSchema.getDoc());
+
         final ArrayNode enumValues = FACTORY.arrayNode();
         for (final String symbol: avroSchema.getEnumSymbols())
             enumValues.add(symbol);
