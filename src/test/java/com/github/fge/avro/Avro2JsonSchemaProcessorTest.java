@@ -1,8 +1,10 @@
 package com.github.fge.avro;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.fge.jsonschema.cfg.ValidationConfiguration;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.processors.data.SchemaHolder;
+import com.github.fge.jsonschema.processors.syntax.SyntaxValidator;
 import com.github.fge.jsonschema.report.DevNullProcessingReport;
 import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.tree.JsonTree;
@@ -19,12 +21,15 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 public abstract class Avro2JsonSchemaProcessorTest
 {
     private static final Avro2JsonSchemaProcessor PROCESSOR
         = new Avro2JsonSchemaProcessor();
+
+    private static final SyntaxValidator VALIDATOR
+        = new SyntaxValidator(ValidationConfiguration.byDefault());
 
     private final JsonNode testNode;
 
@@ -66,5 +71,7 @@ public abstract class Avro2JsonSchemaProcessorTest
 
         final SchemaHolder output = PROCESSOR.process(report, input);
         assertEquals(output.getValue().getBaseNode(), jsonSchema);
+
+        assertTrue(VALIDATOR.schemaIsValid(jsonSchema));
     }
 }
