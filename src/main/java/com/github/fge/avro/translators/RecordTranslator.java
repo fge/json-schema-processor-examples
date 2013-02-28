@@ -15,7 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 
-public final class RecordTranslator
+final class RecordTranslator
     extends NamedAvroTypeTranslator
 {
     private static final ObjectMapper OLD_MAPPER = new ObjectMapper();

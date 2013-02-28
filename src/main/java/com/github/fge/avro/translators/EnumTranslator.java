@@ -5,7 +5,7 @@ import com.github.fge.avro.MutableTree;
 import com.github.fge.jsonschema.report.ProcessingReport;
 import org.apache.avro.Schema;
 
-public final class EnumTranslator
+final class EnumTranslator
     extends NamedAvroTypeTranslator
 {
     private static final AvroTranslator INSTANCE = new EnumTranslator();

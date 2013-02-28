@@ -11,7 +11,7 @@ import org.apache.avro.Schema;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public abstract class NamedAvroTypeTranslator
+abstract class NamedAvroTypeTranslator
     extends AvroTranslator
 {
     protected final String typeName;

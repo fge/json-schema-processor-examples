@@ -6,7 +6,7 @@ import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.util.NodeType;
 import org.apache.avro.Schema;
 
-public final class ByteTranslator
+final class ByteTranslator
     extends AvroTranslator
 {
     private static final String BYTES_PATTERN = "^[\u0000-\u00ff]*$";

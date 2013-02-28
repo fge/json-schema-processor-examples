@@ -9,7 +9,7 @@ import org.apache.avro.Schema;
 
 import java.util.List;
 
-public final class UnionTranslator
+final class UnionTranslator
     extends AvroTranslator
 {
     private static final AvroTranslator INSTANCE = new UnionTranslator();

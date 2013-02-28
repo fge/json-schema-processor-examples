@@ -8,7 +8,7 @@ import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.util.NodeType;
 import org.apache.avro.Schema;
 
-public final class MapTranslator
+final class MapTranslator
     extends AvroTranslator
 {
     private static final AvroTranslator INSTANCE = new MapTranslator();

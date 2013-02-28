@@ -5,7 +5,7 @@ import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.util.NodeType;
 import org.apache.avro.Schema;
 
-public final class FixedTranslator
+final class FixedTranslator
     extends NamedAvroTypeTranslator
 {
     private static final String BYTES_PATTERN = "^[\u0000-\u00ff]*$";
