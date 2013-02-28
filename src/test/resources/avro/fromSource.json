@@ -29,6 +29,7 @@
             "$ref": "#/definitions/enum:test.PrivacyDirectImport",
             "definitions": {
                 "enum:test.PrivacyDirectImport": {
+                    "description": "Privacy Test Enum",
                     "enum": [ "Public", "Private" ]
                 }
             }

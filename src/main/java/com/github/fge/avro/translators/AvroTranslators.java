@@ -1,14 +1,10 @@
 package com.github.fge.avro.translators;
 
-import com.github.fge.avro.UnsupportedAvroSchemaException;
-import com.github.fge.jsonschema.report.ProcessingMessage;
 import com.github.fge.jsonschema.util.NodeType;
 import com.google.common.collect.ImmutableMap;
 import org.apache.avro.Schema;
 
 import java.util.Map;
-
-import static com.github.fge.avro.messages.Avro2JsonSchemaMessages.*;
 
 public final class AvroTranslators
 {
@@ -86,12 +82,7 @@ public final class AvroTranslators
     }
 
     public static AvroTranslator getTranslator(final Schema.Type avroType)
-        throws UnsupportedAvroSchemaException
     {
-        final AvroTranslator ret = TRANSLATORS.get(avroType);
-        if (ret == null)
-            throw new UnsupportedAvroSchemaException(new ProcessingMessage()
-                .message(UNSUPPORTED_TYPE).put("type", avroType));
-        return ret;
+        return TRANSLATORS.get(avroType);
     }
 }
