@@ -1,6 +1,6 @@
 [
     {
-        "avroSchema": { "type": "null" },
+        "avroSchema": "null",
         "jsonSchema": { "type": "null" }
     },
     {
