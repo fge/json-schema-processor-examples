@@ -38,18 +38,12 @@ public final class Avro2JsonSchemaProcessor
             avroSchema = new Schema.Parser().parse(s);
         } catch (SchemaParseException e) {
             throw new IllegalAvroSchemaException(e);
-        } catch (NoSuchMethodError e) {
-            throw new PrehistoricJacksonVersionException(e);
         }
 
         final MutableTree tree = new MutableTree();
-        try {
-            final Schema.Type avroType = avroSchema.getType();
-            AvroTranslators.getTranslator(avroType)
-                .translate(avroSchema, tree, report);
-        } catch (NoSuchMethodError e) {
-            throw new PrehistoricJacksonVersionException(e);
-        }
+        final Schema.Type avroType = avroSchema.getType();
+        AvroTranslators.getTranslator(avroType)
+            .translate(avroSchema, tree, report);
 
         return new SchemaHolder(new CanonicalSchemaTree(tree.getBaseNode()));
     }
