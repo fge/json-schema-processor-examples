@@ -15,16 +15,6 @@ import org.apache.avro.SchemaParseException;
 public final class Avro2JsonSchemaProcessor
     implements Processor<ValueHolder<JsonTree>, SchemaHolder>
 {
-    /*
-     * Avro has two very disturbing characteristics:
-     *
-     * - it uses Jackson 1.8.x -- in 2013??
-     * - SchemaParseException is unchecked -- urgh.
-     *
-     * We have to catch NoSuchMethodError because of the first point, and
-     * work around the second. Which can trigger NoSuchMethodError because of
-     * the first point...
-     */
     @Override
     public SchemaHolder process(final ProcessingReport report,
         final ValueHolder<JsonTree> input)
