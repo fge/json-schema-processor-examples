@@ -3,7 +3,7 @@ package com.github.fge.avro;
 import java.io.IOException;
 
 public final class FixedTest
-    extends Avro2JsonSchemaProcessorTest
+    extends AvroTranslationsTest
 {
     public FixedTest()
         throws IOException

@@ -10,13 +10,20 @@ import com.github.fge.jsonschema.tree.CanonicalSchemaTree;
 import com.github.fge.jsonschema.tree.JsonTree;
 import com.github.fge.jsonschema.util.ValueHolder;
 import org.apache.avro.Schema;
+import org.apache.avro.SchemaParseException;
 
 public final class Avro2JsonSchemaProcessor
     implements Processor<ValueHolder<JsonTree>, SchemaHolder>
 {
     /*
-     * NOTE NOTE NOTE: the Avro schema is supposed to have been validated when
-     * entering this processor!
+     * Avro has two very disturbing characteristics:
+     *
+     * - it uses Jackson 1.8.x -- in 2013??
+     * - SchemaParseException is unchecked -- urgh.
+     *
+     * We have to catch NoSuchMethodError because of the first point, and
+     * work around the second. Which can trigger NoSuchMethodError because of
+     * the first point...
      */
     @Override
     public SchemaHolder process(final ProcessingReport report,
@@ -24,14 +31,25 @@ public final class Avro2JsonSchemaProcessor
         throws ProcessingException
     {
         final JsonNode node = input.getValue().getBaseNode();
-        /*
-         * FIXME: SchemaParseException is an unchecked exception!
-         */
-        final Schema avroSchema = new Schema.Parser().parse(node.toString());
+
+        final Schema avroSchema;
+        try {
+            final String s = node.toString();
+            avroSchema = new Schema.Parser().parse(s);
+        } catch (SchemaParseException e) {
+            throw new IllegalAvroSchemaException(e);
+        } catch (NoSuchMethodError e) {
+            throw new PrehistoricJacksonVersionException(e);
+        }
+
         final MutableTree tree = new MutableTree();
-        final Schema.Type avroType = avroSchema.getType();
-        AvroTranslators.getTranslator(avroType).translate(avroSchema,
-            tree, report);
+        try {
+            final Schema.Type avroType = avroSchema.getType();
+            AvroTranslators.getTranslator(avroType)
+                .translate(avroSchema, tree, report);
+        } catch (NoSuchMethodError e) {
+            throw new PrehistoricJacksonVersionException(e);
+        }
 
         return new SchemaHolder(new CanonicalSchemaTree(tree.getBaseNode()));
     }

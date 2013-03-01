@@ -23,7 +23,7 @@ import java.util.List;
 
 import static org.testng.Assert.*;
 
-public abstract class Avro2JsonSchemaProcessorTest
+public abstract class AvroTranslationsTest
 {
     private static final Avro2JsonSchemaProcessor PROCESSOR
         = new Avro2JsonSchemaProcessor();
@@ -35,7 +35,7 @@ public abstract class Avro2JsonSchemaProcessorTest
 
     private ProcessingReport report;
 
-    protected Avro2JsonSchemaProcessorTest(final String name)
+    protected AvroTranslationsTest(final String name)
         throws IOException
     {
         testNode = JsonLoader.fromResource("/avro/" + name + ".json");

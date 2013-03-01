@@ -3,7 +3,7 @@ package com.github.fge.avro;
 import java.io.IOException;
 
 public final class UnionTest
-    extends Avro2JsonSchemaProcessorTest
+    extends AvroTranslationsTest
 {
     public UnionTest()
         throws IOException
