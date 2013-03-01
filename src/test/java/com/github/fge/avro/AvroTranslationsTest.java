@@ -61,7 +61,11 @@ public abstract class AvroTranslationsTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "testData")
+    @Test(
+        dataProvider = "testData",
+        invocationCount = 10,
+        threadPoolSize = 4
+    )
     public final void conversionIsCorrectlyPerformed(final JsonNode avroSchema,
         final JsonNode jsonSchema)
         throws ProcessingException
