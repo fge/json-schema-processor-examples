@@ -6,16 +6,19 @@ import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.messages.SyntaxMessages;
 import com.github.fge.jsonschema.processing.Processor;
 import com.github.fge.jsonschema.processors.data.SchemaHolder;
-import com.github.fge.jsonschema.report.ConsoleProcessingReport;
 import com.github.fge.jsonschema.report.ProcessingMessage;
 import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.tree.CanonicalSchemaTree;
-import com.github.fge.jsonschema.tree.SchemaTree;
-import com.github.fge.jsonschema.util.JsonLoader;
 import com.github.fge.jsonschema.util.ValueHolder;
 import com.github.fge.util.SimpleValueHolder;
 import com.google.common.io.Files;
+import com.googlecode.jsonschema2pojo.Annotator;
+import com.googlecode.jsonschema2pojo.DefaultGenerationConfig;
+import com.googlecode.jsonschema2pojo.GenerationConfig;
+import com.googlecode.jsonschema2pojo.Jackson2Annotator;
+import com.googlecode.jsonschema2pojo.SchemaGenerator;
 import com.googlecode.jsonschema2pojo.SchemaMapper;
+import com.googlecode.jsonschema2pojo.SchemaStore;
+import com.googlecode.jsonschema2pojo.rules.RuleFactory;
 import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
@@ -51,7 +54,18 @@ public final class JsonSchema2SourceCode
 
         final JsonNode schema = input.getValue().getBaseNode();
         final JCodeModel model = new JCodeModel();
-        final SchemaMapper mapper = new SchemaMapper();
+
+        /*
+         * Customize generated code
+         */
+        final Annotator annotator = new Jackson2Annotator();
+        final SchemaStore store = new SchemaStore();
+        final RuleFactory ruleFactory
+            = new RuleFactory(GENCFG, annotator, store);
+
+        final SchemaMapper mapper
+            = new SchemaMapper(ruleFactory, new SchemaGenerator());
+
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final CodeWriter writer = new SingleStreamCodeWriter(out);
 
@@ -76,7 +90,7 @@ public final class JsonSchema2SourceCode
     }
 
     /*
-     * We unfortunately have to do this ;(
+     * We unfortunately have to do this :(
      */
     private static File schemaToFile(final JsonNode schema)
         throws IOException
@@ -87,21 +101,32 @@ public final class JsonSchema2SourceCode
         return ret;
     }
 
-    public static void main(final String... args)
-        throws IOException, ProcessingException
+    private static final GenerationConfig GENCFG
+        = new DefaultGenerationConfig()
     {
-        final JsonNode schema
-            = JsonLoader.fromResource("/jsonschema2pojo/sample1.json");
-        final SchemaTree tree = new CanonicalSchemaTree(schema);
-        final SchemaHolder input = new SchemaHolder(tree);
+        @Override
+        public boolean isUsePrimitives()
+        {
+            return true;
+        }
 
-        final ProcessingReport report = new ConsoleProcessingReport();
-        final Processor<SchemaHolder, ValueHolder<String>> processor
-            = new JsonSchema2SourceCode();
+        @Override
+        public boolean isIncludeHashcodeAndEquals()
+        {
+            return false;
+        }
 
-        final ValueHolder<String> out = processor.process(report, input);
+        @Override
+        public boolean isIncludeToString()
+        {
+            return false;
+        }
 
-        System.out.println(out.getValue());
-    }
+        @Override
+        public boolean isIncludeJsr303Annotations()
+        {
+            return false;
+        }
+    };
 }
 
