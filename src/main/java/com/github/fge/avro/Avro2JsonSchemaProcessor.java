@@ -9,8 +9,8 @@ import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.tree.CanonicalSchemaTree;
 import com.github.fge.jsonschema.tree.JsonTree;
 import com.github.fge.jsonschema.util.ValueHolder;
+import org.apache.avro.AvroRuntimeException;
 import org.apache.avro.Schema;
-import org.apache.avro.SchemaParseException;
 
 public final class Avro2JsonSchemaProcessor
     implements Processor<ValueHolder<JsonTree>, SchemaHolder>
@@ -26,7 +26,7 @@ public final class Avro2JsonSchemaProcessor
         try {
             final String s = node.toString();
             avroSchema = new Schema.Parser().parse(s);
-        } catch (SchemaParseException e) {
+        } catch (AvroRuntimeException e) {
             throw new IllegalAvroSchemaException(e);
         }
 
