@@ -2,6 +2,7 @@ package com.github.fge.jsonschema2avro.predicates;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonschema.processors.validation.ArraySchemaDigester;
+import com.github.fge.jsonschema.processors.validation.ObjectSchemaDigester;
 import com.github.fge.jsonschema.util.NodeType;
 import com.github.fge.jsonschema2avro.AvroPayload;
 import com.google.common.base.Predicate;
@@ -19,12 +20,10 @@ public final class AvroPredicates
             @Override
             public boolean apply(final AvroPayload input)
             {
-                final JsonNode typeNode  = schemaNode(input).path("type");
-
-                if (!typeNode.isTextual())
+                final JsonNode node = schemaNode(input);
+                final NodeType type = getType(node);
+                if (type == null)
                     return false;
-
-                final NodeType type = NodeType.fromName(typeNode.textValue());
                 return type != NodeType.ARRAY && type != NodeType.OBJECT;
             }
         };
@@ -38,12 +37,9 @@ public final class AvroPredicates
             public boolean apply(final AvroPayload input)
             {
                 final JsonNode node = schemaNode(input);
-                final JsonNode typeNode = node.path("type");
-
-                if (!typeNode.isTextual())
+                final NodeType type = getType(node);
+                if (type == null)
                     return false;
-
-                final NodeType type = NodeType.fromName(typeNode.textValue());
 
                 if (type != NodeType.ARRAY)
                     return false;
@@ -65,8 +61,42 @@ public final class AvroPredicates
         };
     }
 
+    public static Predicate<AvroPayload> map()
+    {
+        return new Predicate<AvroPayload>()
+        {
+            @Override
+            public boolean apply(final AvroPayload input)
+            {
+                final JsonNode node = schemaNode(input);
+                final NodeType type = getType(node);
+
+                if (type != NodeType.OBJECT)
+                    return false;
+
+                final JsonNode digest = ObjectSchemaDigester.getInstance()
+                    .digest(node);
+
+                // FIXME: as for array digester, the result should really be
+                // a POJO
+                if (!digest.get("hasAdditional").booleanValue())
+                    return false;
+
+                return digest.get("properties").size() == 0
+                    && digest.get("patternProperties").size() == 0;
+            }
+        };
+    }
+
     private static JsonNode schemaNode(final AvroPayload payload)
     {
         return payload.getTree().getNode();
+    }
+
+    private static NodeType getType(final JsonNode node)
+    {
+        final JsonNode typeNode = node.path("type");
+        return typeNode.isTextual() ? NodeType.fromName(typeNode.textValue())
+            : null;
     }
 }

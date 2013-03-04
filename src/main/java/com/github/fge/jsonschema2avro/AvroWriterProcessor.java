@@ -46,7 +46,7 @@ public final class AvroWriterProcessor
     {
         final JsonNode node
             = JsonLoader.fromString("{\"type\": \"array\"," +
-            "\"items\":{\"type\":\"null\"}}");
+            "\"additionalItems\":{\"type\":\"null\"}}");
         final SchemaTree tree = new CanonicalSchemaTree(node);
         final SchemaHolder input = new SchemaHolder(tree);
         final AvroWriterProcessor p = new AvroWriterProcessor();
