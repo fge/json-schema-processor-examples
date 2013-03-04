@@ -12,6 +12,7 @@ import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.JsonLoader;
 import com.github.fge.jsonschema.util.ValueHolder;
 import com.github.fge.jsonschema2avro.writers.ArrayWriter;
+import com.github.fge.jsonschema2avro.writers.MapWriter;
 import com.github.fge.jsonschema2avro.writers.SimpleTypeWriter;
 import org.apache.avro.Schema;
 
@@ -29,6 +30,7 @@ public final class AvroWriterProcessor
         processor = new ProcessorSelector<AvroPayload, ValueHolder<Schema>>()
             .when(simpleType()).then(SimpleTypeWriter.getInstance())
             .when(array()).then(ArrayWriter.getInstance())
+            .when(map()).then(MapWriter.getInstance())
             .getProcessor();
     }
 
