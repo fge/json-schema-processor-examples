@@ -131,6 +131,37 @@ public final class AvroPredicates
         };
     }
 
+    public static Predicate<AvroPayload> record()
+    {
+        return new Predicate<AvroPayload>()
+        {
+            @Override
+            public boolean apply(final AvroPayload input)
+            {
+                final JsonNode node = schemaNode(input);
+                final NodeType type = getType(node);
+                if (NodeType.OBJECT != type)
+                    return false;
+
+                if (node.path("additionalProperties").asBoolean(true))
+                    return false;
+
+                if (node.has("patternProperties"))
+                    return false;
+
+                final JsonNode properties = node.path("properties");
+                if (!properties.isObject())
+                    return false;
+
+                for (final String s: Sets.newHashSet(properties.fieldNames()))
+                    if (!isValidAvroName(s))
+                        return false;
+
+                return true;
+            }
+        };
+    }
+
     private static JsonNode schemaNode(final AvroPayload payload)
     {
         return payload.getTree().getNode();
