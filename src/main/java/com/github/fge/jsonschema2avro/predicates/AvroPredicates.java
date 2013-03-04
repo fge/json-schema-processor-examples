@@ -38,25 +38,16 @@ public final class AvroPredicates
             {
                 final JsonNode node = schemaNode(input);
                 final NodeType type = getType(node);
-                if (type == null)
-                    return false;
-
-                if (type != NodeType.ARRAY)
+                if (NodeType.ARRAY != type)
                     return false;
 
                 final JsonNode digest
                     = ArraySchemaDigester.getInstance().digest(node);
 
                 // FIXME: I should probably make digests POJOs here
-                final boolean hasItems = digest.get("hasItems").booleanValue();
-                final boolean itemsIsArray = digest.get("itemsIsArray")
-                    .booleanValue();
-                final boolean hasAdditional = digest.get("hasAdditional")
-                    .booleanValue();
-
-                if (!hasItems)
-                    return hasAdditional;
-                return !(itemsIsArray || hasAdditional);
+                return digest.get("hasItems").booleanValue()
+                    ? !digest.get("itemsIsArray").booleanValue()
+                    : digest.get("hasAdditional").booleanValue();
             }
         };
     }
@@ -70,8 +61,7 @@ public final class AvroPredicates
             {
                 final JsonNode node = schemaNode(input);
                 final NodeType type = getType(node);
-
-                if (type != NodeType.OBJECT)
+                if (NodeType.OBJECT != type)
                     return false;
 
                 final JsonNode digest = ObjectSchemaDigester.getInstance()
