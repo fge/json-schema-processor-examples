@@ -9,7 +9,7 @@ import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.JsonLoader;
 import com.google.common.collect.Lists;
 import org.apache.avro.Schema;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 public abstract class AvroWriterProcessorTest
 {
@@ -34,7 +34,7 @@ public abstract class AvroWriterProcessorTest
             + ".json");
     }
 
-    @BeforeTest
+    @BeforeMethod
     public final void init()
     {
         processor = new AvroWriterProcessor();

@@ -1,14 +1,41 @@
 package com.github.fge.jsonschema2avro.predicates;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.fge.jsonschema.library.DraftV4Library;
 import com.github.fge.jsonschema.processors.validation.ArraySchemaDigester;
 import com.github.fge.jsonschema.processors.validation.ObjectSchemaDigester;
 import com.github.fge.jsonschema.util.NodeType;
 import com.github.fge.jsonschema2avro.AvroPayload;
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
+import java.util.Set;
 
 public final class AvroPredicates
 {
+    private static final Set<String> KNOWN_KEYWORDS;
+    private static final CharMatcher NAME_CHAR;
+    private static final CharMatcher DIGIT;
+
+    static {
+        final CharMatcher letterOrUnderscore = CharMatcher.is('_')
+            .or(CharMatcher.inRange('a', 'z'))
+            .or(CharMatcher.inRange('A', 'Z'));
+        final CharMatcher digit = CharMatcher.inRange('0', '9');
+
+        NAME_CHAR = letterOrUnderscore.or(digit).precomputed();
+        DIGIT = digit.precomputed();
+
+        /*
+         * We don't care about keywords having only syntax checkers, only about
+         * keywords having an actual use in validation
+         */
+        KNOWN_KEYWORDS = ImmutableSet.copyOf(DraftV4Library.get()
+            .getDigesters().entries().keySet());
+    }
+
     private AvroPredicates()
     {
     }
@@ -78,6 +105,32 @@ public final class AvroPredicates
         };
     }
 
+    public static Predicate<AvroPayload> isEnum()
+    {
+        return new Predicate<AvroPayload>()
+        {
+            @Override
+            public boolean apply(final AvroPayload input)
+            {
+                final JsonNode node = schemaNode(input);
+                final Set<String> set = Sets.newHashSet(node.fieldNames());
+                if (!set.equals(ImmutableSet.of("enum")))
+                    return false;
+
+                // Test individual entries: they must be strings, and must be
+                // the same "shape" as any Avro name
+                for (final JsonNode element: node.get("enum")) {
+                    if (!element.isTextual())
+                        return false;
+                    if (!isValidAvroName(element.textValue()))
+                        return false;
+                }
+
+                return true;
+            }
+        };
+    }
+
     private static JsonNode schemaNode(final AvroPayload payload)
     {
         return payload.getTree().getNode();
@@ -88,5 +141,14 @@ public final class AvroPredicates
         final JsonNode typeNode = node.path("type");
         return typeNode.isTextual() ? NodeType.fromName(typeNode.textValue())
             : null;
+    }
+
+    private static boolean isValidAvroName(final String s)
+    {
+        if (s.isEmpty())
+            return false;
+        if (!NAME_CHAR.matchesAllOf(s))
+            return false;
+        return !DIGIT.matches(s.charAt(0));
     }
 }

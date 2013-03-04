@@ -12,6 +12,7 @@ import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.JsonLoader;
 import com.github.fge.jsonschema.util.ValueHolder;
 import com.github.fge.jsonschema2avro.writers.ArrayWriter;
+import com.github.fge.jsonschema2avro.writers.EnumWriter;
 import com.github.fge.jsonschema2avro.writers.MapWriter;
 import com.github.fge.jsonschema2avro.writers.SimpleTypeWriter;
 import org.apache.avro.Schema;
@@ -31,6 +32,7 @@ public final class AvroWriterProcessor
             .when(simpleType()).then(SimpleTypeWriter.getInstance())
             .when(array()).then(ArrayWriter.getInstance())
             .when(map()).then(MapWriter.getInstance())
+            .when(isEnum()).then(new EnumWriter())
             .getProcessor();
     }
 
