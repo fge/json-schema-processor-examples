@@ -19,7 +19,7 @@ public final class DraftV3OnlySyntaxProcessor
     public DraftV3OnlySyntaxProcessor()
     {
         final SyntaxProcessor syntaxProcessor
-            = new SyntaxProcessor(DraftV3Library.get());
+            = new SyntaxProcessor(DraftV3Library.get().getSyntaxCheckers());
 
         final JsonRef draftv3
             = JsonRef.fromURI(SchemaVersion.DRAFTV3.getLocation());
