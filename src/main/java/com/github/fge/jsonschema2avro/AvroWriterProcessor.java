@@ -17,6 +17,7 @@ import com.github.fge.jsonschema2avro.writers.MapWriter;
 import com.github.fge.jsonschema2avro.writers.RecordWriter;
 import com.github.fge.jsonschema2avro.writers.SimpleTypeWriter;
 import com.github.fge.jsonschema2avro.writers.SimpleUnionWriter;
+import com.github.fge.jsonschema2avro.writers.TypeUnionWriter;
 import org.apache.avro.Schema;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public final class AvroWriterProcessor
             .when(isEnum()).then(new EnumWriter())
             .when(record()).then(new RecordWriter())
             .when(simpleUnion()).then(SimpleUnionWriter.getInstance())
+            .when(typeUnion()).then(TypeUnionWriter.getInstance())
             .getProcessor();
     }
 

@@ -181,6 +181,18 @@ public final class AvroPredicates
         };
     }
 
+    public static Predicate<AvroPayload> typeUnion()
+    {
+        return new Predicate<AvroPayload>()
+        {
+            @Override
+            public boolean apply(final AvroPayload input)
+            {
+                return schemaNode(input).path("type").isArray();
+            }
+        };
+    }
+
     private static JsonNode schemaNode(final AvroPayload payload)
     {
         return payload.getTree().getNode();
