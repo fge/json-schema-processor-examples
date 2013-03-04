@@ -1,9 +1,9 @@
 package com.github.fge.jsonschema2avro.writers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.processing.Processor;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.ValueHolder;
 import com.github.fge.jsonschema2avro.AvroPayload;
 import com.github.fge.jsonschema2avro.AvroWriterProcessor;
@@ -18,11 +18,12 @@ public abstract class AvroWriter
         throws ProcessingException
     {
         final AvroWriterProcessor writer = input.getWriter();
-        final JsonNode node = input.getTree().getNode();
-        final Schema schema = generate(writer, report, node);
+        final SchemaTree tree = input.getTree();
+        final Schema schema = generate(writer, report, tree);
         return ValueHolder.hold(schema);
     }
 
     protected abstract Schema generate(final AvroWriterProcessor writer,
-        final ProcessingReport report, final JsonNode node);
+        final ProcessingReport report, final SchemaTree tree)
+        throws ProcessingException;
 }

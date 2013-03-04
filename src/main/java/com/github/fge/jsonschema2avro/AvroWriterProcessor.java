@@ -11,6 +11,7 @@ import com.github.fge.jsonschema.tree.CanonicalSchemaTree;
 import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.JsonLoader;
 import com.github.fge.jsonschema.util.ValueHolder;
+import com.github.fge.jsonschema2avro.writers.ArrayWriter;
 import com.github.fge.jsonschema2avro.writers.SimpleTypeWriter;
 import org.apache.avro.Schema;
 
@@ -27,6 +28,7 @@ public final class AvroWriterProcessor
     {
         processor = new ProcessorSelector<AvroPayload, ValueHolder<Schema>>()
             .when(simpleType()).then(SimpleTypeWriter.getInstance())
+            .when(array()).then(ArrayWriter.getInstance())
             .getProcessor();
     }
 
@@ -42,7 +44,9 @@ public final class AvroWriterProcessor
     public static void main(final String... args)
         throws ProcessingException, IOException
     {
-        final JsonNode node = JsonLoader.fromString("{\"type\":\"null\"}");
+        final JsonNode node
+            = JsonLoader.fromString("{\"type\": \"array\"," +
+            "\"items\":{\"type\":\"null\"}}");
         final SchemaTree tree = new CanonicalSchemaTree(node);
         final SchemaHolder input = new SchemaHolder(tree);
         final AvroWriterProcessor p = new AvroWriterProcessor();
