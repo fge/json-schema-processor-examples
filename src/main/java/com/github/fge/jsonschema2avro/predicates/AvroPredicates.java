@@ -114,6 +114,7 @@ public final class AvroPredicates
             {
                 final JsonNode node = schemaNode(input);
                 final Set<String> set = Sets.newHashSet(node.fieldNames());
+                set.retainAll(KNOWN_KEYWORDS);
                 if (!set.equals(ImmutableSet.of("enum")))
                     return false;
 
@@ -158,6 +159,24 @@ public final class AvroPredicates
                         return false;
 
                 return true;
+            }
+        };
+    }
+
+    public static Predicate<AvroPayload> simpleUnion()
+    {
+        return new Predicate<AvroPayload>()
+        {
+            @Override
+            public boolean apply(final AvroPayload input)
+            {
+                // NOTE: enums within enums are forbidden. This is tested in
+                // writers, not here.
+                final JsonNode node = schemaNode(input);
+                final Set<String> members = Sets.newHashSet(node.fieldNames());
+                members.retainAll(KNOWN_KEYWORDS);
+                return members.equals(ImmutableSet.of("anyOf"))
+                    || members.equals(ImmutableSet.of("oneOf"));
             }
         };
     }
