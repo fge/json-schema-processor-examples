@@ -15,14 +15,14 @@ public final class SchemaExpander
     public void onInit(final SchemaTree tree)
         throws ProcessingException
     {
-        mutableTree.setCurrentNode(tree.getNode().deepCopy());
+        mutableTree.setCurrentNode(tree.getNode());
     }
 
     @Override
     public void onNewTree(final SchemaTree oldTree, final SchemaTree newTree)
         throws ProcessingException
     {
-        mutableTree.setCurrentNode(newTree.getNode().deepCopy());
+        mutableTree.setCurrentNode(newTree.getNode());
     }
 
     @Override

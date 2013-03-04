@@ -24,6 +24,7 @@ import com.github.fge.jsonschema.util.JacksonUtils;
 import com.google.common.collect.Queues;
 
 import java.lang.Override;import java.lang.String;import java.util.Deque;
+import java.util.Map;
 
 public final class MutableTree
 {
@@ -59,7 +60,9 @@ public final class MutableTree
     public void setCurrentNode(final JsonNode node)
     {
         currentNode.removeAll();
-        currentNode.putAll(JacksonUtils.asMap(node));
+        final Map<String,JsonNode> map = JacksonUtils.asMap(node);
+        for (final Map.Entry<String, JsonNode> entry: map.entrySet())
+            currentNode.put(entry.getKey(), entry.getValue().deepCopy());
     }
 
     @Override
