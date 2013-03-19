@@ -5,9 +5,9 @@ import com.github.fge.jsonschema.exceptions.InvalidSchemaException;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.messages.SyntaxMessages;
 import com.github.fge.jsonschema.processing.Processor;
-import com.github.fge.jsonschema.processors.data.SchemaHolder;
 import com.github.fge.jsonschema.report.ProcessingMessage;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.ValueHolder;
 import com.github.fge.util.SimpleValueHolder;
 import com.google.common.io.Files;
@@ -29,19 +29,19 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 public final class JsonSchema2SourceCode
-    implements Processor<SchemaHolder, ValueHolder<String>>
+    implements Processor<ValueHolder<SchemaTree>, ValueHolder<String>>
 {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     private static final String CLASSNAME = "Whatever";
     private static final String PKGNAME = "com.github.fge.compiled";
 
-    private final Processor<SchemaHolder, SchemaHolder> processor
-        = new DraftV3OnlySyntaxProcessor();
+    private final Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
+        processor = new DraftV3OnlySyntaxProcessor();
 
     @Override
     public ValueHolder<String> process(final ProcessingReport report,
-        final SchemaHolder input)
+        final ValueHolder<SchemaTree> input)
         throws ProcessingException
     {
         /*

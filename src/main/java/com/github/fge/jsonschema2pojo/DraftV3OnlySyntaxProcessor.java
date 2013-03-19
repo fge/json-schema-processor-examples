@@ -5,16 +5,18 @@ import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.library.DraftV3Library;
 import com.github.fge.jsonschema.processing.Processor;
 import com.github.fge.jsonschema.processing.ProcessorMap;
-import com.github.fge.jsonschema.processors.data.SchemaHolder;
-import com.github.fge.jsonschema.processors.syntax.SyntaxProcessor;
 import com.github.fge.jsonschema.ref.JsonRef;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.syntax.SyntaxProcessor;
+import com.github.fge.jsonschema.tree.SchemaTree;
+import com.github.fge.jsonschema.util.ValueHolder;
 import com.google.common.base.Function;
 
 public final class DraftV3OnlySyntaxProcessor
-    implements Processor<SchemaHolder, SchemaHolder>
+    implements Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
 {
-    private final Processor<SchemaHolder, SchemaHolder> processor;
+    private final Processor<ValueHolder<SchemaTree>,  ValueHolder<SchemaTree>>
+        processor;
 
     public DraftV3OnlySyntaxProcessor()
     {
@@ -24,7 +26,8 @@ public final class DraftV3OnlySyntaxProcessor
         final JsonRef draftv3
             = JsonRef.fromURI(SchemaVersion.DRAFTV3.getLocation());
 
-        final ProcessorMap<JsonRef, SchemaHolder, SchemaHolder> map
+        final ProcessorMap<JsonRef, ValueHolder<SchemaTree>,
+            ValueHolder<SchemaTree>> map
             = new SchemaMap()
                 .addEntry(draftv3, syntaxProcessor)
                 .addEntry(JsonRef.emptyRef(), syntaxProcessor)
@@ -34,19 +37,20 @@ public final class DraftV3OnlySyntaxProcessor
     }
 
     @Override
-    public SchemaHolder process(final ProcessingReport report,
-        final SchemaHolder input)
+    public ValueHolder<SchemaTree> process(final ProcessingReport report,
+        final ValueHolder<SchemaTree> input)
         throws ProcessingException
     {
         return processor.process(report, input);
     }
 
-    private static final Processor<SchemaHolder, SchemaHolder> UNSUPPORTED
-        = new Processor<SchemaHolder, SchemaHolder>()
+    private static final Processor<ValueHolder<SchemaTree>,
+        ValueHolder<SchemaTree>> UNSUPPORTED
+        = new Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>()
     {
         @Override
-        public SchemaHolder process(final ProcessingReport report,
-            final SchemaHolder input)
+        public ValueHolder<SchemaTree> process(final ProcessingReport report,
+            final ValueHolder<SchemaTree> input)
             throws ProcessingException
         {
             throw new UnsupportedVersionException();
@@ -54,16 +58,16 @@ public final class DraftV3OnlySyntaxProcessor
     };
 
     private static final class SchemaMap
-        extends ProcessorMap<JsonRef, SchemaHolder, SchemaHolder>
+        extends ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
     {
 
         @Override
-        protected Function<SchemaHolder, JsonRef> f()
+        protected Function<ValueHolder<SchemaTree>, JsonRef> f()
         {
-            return new Function<SchemaHolder, JsonRef>()
+            return new Function<ValueHolder<SchemaTree>, JsonRef>()
             {
                 @Override
-                public JsonRef apply(final SchemaHolder input)
+                public JsonRef apply(final ValueHolder<SchemaTree> input)
                 {
                     return input.getValue().getDollarSchema();
                 }

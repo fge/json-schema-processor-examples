@@ -5,13 +5,14 @@ import com.github.fge.compiler.CompilerProcessor;
 import com.github.fge.compiler.CompilingException;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.processing.Processor;
-import com.github.fge.jsonschema.processors.data.SchemaHolder;
 import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.tree.SchemaTree;
+import com.github.fge.jsonschema.util.ValueHolder;
 
 import java.io.File;
 
 public final class JJSchemaFromSource
-    implements Processor<SourceHolder, SchemaHolder>
+    implements Processor<SourceHolder, ValueHolder<SchemaTree>>
 {
     private static final JJSchemaFromSource INSTANCE = new JJSchemaFromSource();
 
@@ -28,7 +29,7 @@ public final class JJSchemaFromSource
     }
 
     @Override
-    public SchemaHolder process(final ProcessingReport report,
+    public ValueHolder<SchemaTree> process(final ProcessingReport report,
         final SourceHolder input)
         throws ProcessingException
     {
