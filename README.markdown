@@ -3,8 +3,9 @@
 <p>The license of this project is LGPLv3 or later. See file src/main/resources/LICENSE for the full
 text.</p>
 
-<p>The current version is <b>0.3</b>. Note however that the list of processors reflects the one in
-<tt>master</tt>.</p>
+<h1>Version</h1>
+
+<p>The current version is <b>0.4</b>.</p>
 
 <h1>What this is</h1>
 
@@ -17,6 +18,9 @@ href="https://github.com/fge/json-schema-core">json-schema-core</a>.</p>
 wiki</a> for the list of processors, what software is used by each of them, etc.</p>
 
 <p>Please note that at this moment, while all are functional, they are pretty basic.</p>
+
+<p>Also note that as the time goes, some processors written in this package migrate to other,
+dedicated packages.</p>
 
 <h1>Maven artifact</h1>
 
