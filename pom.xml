@@ -111,35 +111,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>1.7.4</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-compress</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.thoughtworks.paranamer</groupId>
-                    <artifactId>paranamer</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.xerial.snappy</groupId>
-                    <artifactId>snappy-java</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.codehaus.jackson</groupId>
-                    <artifactId>jackson-core-asl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.codehaus.jackson</groupId>
-                    <artifactId>jackson-mapper-asl</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.github.fge</groupId>
+            <artifactId>json-schema-avro</artifactId>
+            <version>0.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
