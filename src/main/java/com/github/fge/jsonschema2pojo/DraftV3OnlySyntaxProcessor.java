@@ -15,6 +15,16 @@ import com.google.common.base.Function;
 public final class DraftV3OnlySyntaxProcessor
     implements Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
 {
+    private static final Function<ValueHolder<SchemaTree>, JsonRef> FUNCTION
+        = new Function<ValueHolder<SchemaTree>, JsonRef>()
+    {
+        @Override
+        public JsonRef apply(final ValueHolder<SchemaTree> input)
+        {
+            return input.getValue().getDollarSchema();
+        }
+    };
+
     private final Processor<ValueHolder<SchemaTree>,  ValueHolder<SchemaTree>>
         processor;
 
@@ -26,9 +36,8 @@ public final class DraftV3OnlySyntaxProcessor
         final JsonRef draftv3
             = JsonRef.fromURI(SchemaVersion.DRAFTV3.getLocation());
 
-        final ProcessorMap<JsonRef, ValueHolder<SchemaTree>,
-            ValueHolder<SchemaTree>> map
-            = new SchemaMap()
+        final ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>> map
+            = new ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>(FUNCTION)
                 .addEntry(draftv3, syntaxProcessor)
                 .addEntry(JsonRef.emptyRef(), syntaxProcessor)
                 .setDefaultProcessor(UNSUPPORTED);
@@ -56,22 +65,4 @@ public final class DraftV3OnlySyntaxProcessor
             throw new UnsupportedVersionException();
         }
     };
-
-    private static final class SchemaMap
-        extends ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
-    {
-
-        @Override
-        protected Function<ValueHolder<SchemaTree>, JsonRef> f()
-        {
-            return new Function<ValueHolder<SchemaTree>, JsonRef>()
-            {
-                @Override
-                public JsonRef apply(final ValueHolder<SchemaTree> input)
-                {
-                    return input.getValue().getDollarSchema();
-                }
-            };
-        }
-    }
 }
