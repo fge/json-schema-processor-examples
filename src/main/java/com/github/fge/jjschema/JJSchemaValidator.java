@@ -37,9 +37,10 @@ public final class JJSchemaValidator
         throws ProcessingException
     {
         final ProcessingReport report = new ConsoleProcessingReport();
-        final ClassHolder classHolder = new ClassHolder(c);
+        final ValueHolder<Class<?>> holder
+            = ValueHolder.<Class<?>>hold("class", c);
         final ValueHolder<SchemaTree> schemaHolder
-            = classToSchema.process(report, classHolder);
+            = classToSchema.process(report, holder);
         final JsonTree tree = new SimpleJsonTree(instance);
         final FullData fullData = new FullData(schemaHolder.getValue(),
             tree);

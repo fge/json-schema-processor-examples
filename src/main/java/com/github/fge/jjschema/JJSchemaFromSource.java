@@ -4,7 +4,7 @@ import com.github.fge.compiler.CompilerOutput;
 import com.github.fge.compiler.CompilerProcessor;
 import com.github.fge.compiler.CompilingException;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
-import com.github.fge.jsonschema.processing.Processor;
+import com.github.fge.jsonschema.processing.RawProcessor;
 import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.ValueHolder;
@@ -12,7 +12,7 @@ import com.github.fge.jsonschema.util.ValueHolder;
 import java.io.File;
 
 public final class JJSchemaFromSource
-    implements Processor<SourceHolder, ValueHolder<SchemaTree>>
+    extends RawProcessor<String, SchemaTree>
 {
     private static final JJSchemaFromSource INSTANCE = new JJSchemaFromSource();
 
@@ -26,18 +26,21 @@ public final class JJSchemaFromSource
 
     private JJSchemaFromSource()
     {
+        super("source", "schema");
     }
 
     @Override
-    public ValueHolder<SchemaTree> process(final ProcessingReport report,
-        final SourceHolder input)
+    protected SchemaTree rawProcess(final ProcessingReport report,
+        final String input)
         throws ProcessingException
     {
-        final CompilerOutput compilerOutput = compiler.process(report, input);
+        final ValueHolder<String> holder = ValueHolder.hold("source", input);
+        final CompilerOutput compilerOutput = compiler.process(report, holder);
 
         try {
+            final ValueHolder<Class<?>> input1 = extractClass(compilerOutput);
             return report.isSuccess()
-                ? classToSchema.process(report, extractClass(compilerOutput))
+                ? classToSchema.process(report, input1).getValue()
                 : null;
         } finally {
             final String dir = compilerOutput.getDirectory().getDirectory();
@@ -45,11 +48,12 @@ public final class JJSchemaFromSource
         }
     }
 
-    private static ClassHolder extractClass(final CompilerOutput compilerOutput)
+    private static ValueHolder<Class<?>> extractClass(final CompilerOutput
+    compilerOutput)
         throws CompilingException
     {
         final Class<?> c = compilerOutput.getGeneratedClass();
-        return new ClassHolder(c);
+        return ValueHolder.<Class<?>>hold("class", c);
     }
 
     private static void rmDashRf(final File file)
