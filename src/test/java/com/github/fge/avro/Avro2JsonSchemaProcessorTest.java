@@ -9,7 +9,6 @@ import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.tree.JsonTree;
 import com.github.fge.jsonschema.tree.SimpleJsonTree;
 import com.github.fge.jsonschema.util.ValueHolder;
-import com.github.fge.util.SimpleValueHolder;
 import org.apache.avro.SchemaParseException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -35,7 +34,7 @@ public final class Avro2JsonSchemaProcessorTest
     {
         final JsonTree tree = new SimpleJsonTree(schema);
         final ValueHolder<JsonTree> input
-            = new SimpleValueHolder<JsonTree>(tree);
+            = ValueHolder.hold("avroSchema", tree);
         final ProcessingReport report = new DevNullProcessingReport();
 
         try {

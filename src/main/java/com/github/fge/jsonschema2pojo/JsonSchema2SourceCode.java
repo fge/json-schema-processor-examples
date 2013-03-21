@@ -5,11 +5,11 @@ import com.github.fge.jsonschema.exceptions.InvalidSchemaException;
 import com.github.fge.jsonschema.exceptions.ProcessingException;
 import com.github.fge.jsonschema.messages.SyntaxMessages;
 import com.github.fge.jsonschema.processing.Processor;
+import com.github.fge.jsonschema.processing.RawProcessor;
 import com.github.fge.jsonschema.report.ProcessingMessage;
 import com.github.fge.jsonschema.report.ProcessingReport;
 import com.github.fge.jsonschema.tree.SchemaTree;
 import com.github.fge.jsonschema.util.ValueHolder;
-import com.github.fge.util.SimpleValueHolder;
 import com.google.common.io.Files;
 import com.googlecode.jsonschema2pojo.Annotator;
 import com.googlecode.jsonschema2pojo.DefaultGenerationConfig;
@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 public final class JsonSchema2SourceCode
-    implements Processor<ValueHolder<SchemaTree>, ValueHolder<String>>
+    extends RawProcessor<SchemaTree, String>
 {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
@@ -39,20 +39,27 @@ public final class JsonSchema2SourceCode
     private final Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
         processor = new DraftV3OnlySyntaxProcessor();
 
+    public JsonSchema2SourceCode()
+    {
+        super("schema", "sourceCode");
+    }
+
     @Override
-    public ValueHolder<String> process(final ProcessingReport report,
-        final ValueHolder<SchemaTree> input)
+    protected String rawProcess(final ProcessingReport report,
+        final SchemaTree input)
         throws ProcessingException
     {
         /*
          * First check if the syntax is valid
          */
-        processor.process(report, input);
+        final ValueHolder<SchemaTree> holder
+            = ValueHolder.hold("schema", input);
+        processor.process(report, holder);
         if (!report.isSuccess())
             throw new InvalidSchemaException(new ProcessingMessage()
                 .message(SyntaxMessages.INVALID_SCHEMA));
 
-        final JsonNode schema = input.getValue().getBaseNode();
+        final JsonNode schema = input.getBaseNode();
         final JCodeModel model = new JCodeModel();
 
         /*
@@ -79,13 +86,12 @@ public final class JsonSchema2SourceCode
         try {
             mapper.generate(model, CLASSNAME, PKGNAME, file.toURI().toURL());
             model.build(writer);
-            final String code = out.toString("UTF-8");
-            return new SimpleValueHolder<String>(code);
+            return out.toString("UTF-8");
         } catch (IOException e) {
             throw new ProcessingException("failed to generate source", e);
         } finally {
             if (!file.delete())
-                report.warn(input.newMessage().message("cannot delete file"));
+                report.warn(newMessage(input).message("cannot delete file"));
         }
     }
 
