@@ -1,9 +1,0 @@
-{
-    "type": "object",
-    "required": [ "id", "name" ],
-    "additionalProperties": false,
-    "properties": {
-        "id": { "$ref": "id.json#" },
-        "name": { "$ref": "name.json#" }
-    }
-}

@@ -1,5 +1,0 @@
-{
-    "type": "string",
-    "not": { "pattern": "\\s" },
-    "minLength": 5
-}
