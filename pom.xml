@@ -113,7 +113,7 @@
         <dependency>
             <groupId>com.github.fge</groupId>
             <artifactId>json-schema-avro</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
