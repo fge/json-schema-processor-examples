@@ -20,7 +20,7 @@
     <groupId>com.github.fge</groupId>
     <artifactId>json-schema-processor-examples</artifactId>
     <name>json-schema-processor-examples</name>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5</version>
     <packaging>jar</packaging>
     <description>Sample JSON Schema related processors using json-schema-core and various external libraries</description>
     <url>https://github.com/fge/json-schema-processor-examples</url>
