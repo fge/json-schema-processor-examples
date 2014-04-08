@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2014, Francis Galiegue (fgaliegue@gmail.com)
+ *
+ * This software is dual-licensed under:
+ *
+ * - the Lesser General Public License (LGPL) version 3.0 or, at your option, any
+ *   later version;
+ * - the Apache Software License (ASL) version 2.0.
+ *
+ * The text of both licenses is available under the src/resources/ directory of
+ * this project (under the names LGPL-3.0.txt and ASL-2.0.txt respectively).
+ *
+ * Direct link to the sources:
+ *
+ * - LGPL 3.0: https://www.gnu.org/licenses/lgpl-3.0.txt
+ * - ASL 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt
+ */
+
+/*
+ * Project-specific settings. Unfortunately we cannot put the name in there!
+ */
+group = "com.github.fge";
+version = "0.6-SNAPSHOT";
+sourceCompatibility = "1.6";
+targetCompatibility = "1.6"; // defaults to sourceCompatibility
+
+project.ext {
+    description = "Sample JSON Schema related processors using json-schema-core and various external libraries";
+};
+
+/*
+ * List of dependencies
+ */
+dependencies {
+    compile(group: "com.github.fge", name: "json-schema-validator",
+        version: "2.1.2");
+    compile(group: "com.github.reinert", name: "jjschema", version: "0.6") {
+        exclude(group: "com.sun.jersey", module: "jersey-core");
+        exclude(group: "com.github.fge", module: "json-schema-core");
+        exclude(group: "com.fasterxml.jackson.core", module: "jackson-core");
+        exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind");
+    }
+    compile(group: "com.googlecode.jsonschema2pojo",
+        name: "jsonschema2pojo-core", version: "0.3.5") {
+        exclude(group: "com.fasterxml.jackson.core", module: "jackson-core");
+        exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind");
+    }
+    compile(group: "com.github.fge", name: "json-schema-avro", version: "0.1.2");
+    compile(group: "com.github.fge", name: "json-patch", version: "1.3");
+    testCompile(group: "org.testng", name: "testng", version: "6.8.7") {
+        exclude(group: "junit", module: "junit");
+        exclude(group: "org.beanshell", module: "bsh");
+        exclude(group: "org.yaml", module: "snakeyaml");
+    };
+    testCompile(group: "org.mockito", name: "mockito-core", version: "1.9.5");
+}
+
+javadoc.options.links("http://docs.oracle.com/javase/6/docs/api");
+javadoc.options.links("http://jsr-305.googlecode.com/svn/trunk/javadoc");
+javadoc.options.links("http://fasterxml.github.com/jackson-databind/javadoc/2.2.0");
+javadoc.options.links("http://docs.guava-libraries.googlecode.com/git-history/v16.0.1/javadoc");
+javadoc.options.links("http://fge.github.io/msg-simple");
+
