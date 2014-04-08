@@ -1,15 +1,14 @@
 package com.github.fge.jsonschema2pojo;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jsonschema.exceptions.InvalidSchemaException;
-import com.github.fge.jsonschema.exceptions.ProcessingException;
-import com.github.fge.jsonschema.messages.SyntaxMessages;
-import com.github.fge.jsonschema.processing.Processor;
-import com.github.fge.jsonschema.processing.RawProcessor;
-import com.github.fge.jsonschema.report.ProcessingMessage;
-import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.tree.SchemaTree;
-import com.github.fge.jsonschema.util.ValueHolder;
+import com.github.fge.jsonschema.core.exceptions.InvalidSchemaException;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.processing.Processor;
+import com.github.fge.jsonschema.core.processing.RawProcessor;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.core.tree.SchemaTree;
+import com.github.fge.jsonschema.core.util.ValueHolder;
 import com.google.common.io.Files;
 import com.googlecode.jsonschema2pojo.Annotator;
 import com.googlecode.jsonschema2pojo.DefaultGenerationConfig;
@@ -57,7 +56,7 @@ public final class JsonSchema2SourceCode
         processor.process(report, holder);
         if (!report.isSuccess())
             throw new InvalidSchemaException(new ProcessingMessage()
-                .message(SyntaxMessages.INVALID_SCHEMA));
+                .setMessage("invalid schema, cannot continue"));
 
         final JsonNode schema = input.getBaseNode();
         final JCodeModel model = new JCodeModel();
@@ -91,7 +90,7 @@ public final class JsonSchema2SourceCode
             throw new ProcessingException("failed to generate source", e);
         } finally {
             if (!file.delete())
-                report.warn(newMessage(input).message("cannot delete file"));
+                report.warn(newMessage(input).setMessage("cannot delete file"));
         }
     }
 

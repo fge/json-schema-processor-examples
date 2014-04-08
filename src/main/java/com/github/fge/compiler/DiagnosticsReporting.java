@@ -1,9 +1,9 @@
 package com.github.fge.compiler;
 
-import com.github.fge.jsonschema.report.ListProcessingReport;
-import com.github.fge.jsonschema.report.LogLevel;
-import com.github.fge.jsonschema.report.ProcessingMessage;
-import com.github.fge.jsonschema.report.ProcessingReport;
+import com.github.fge.jsonschema.core.report.ListProcessingReport;
+import com.github.fge.jsonschema.core.report.LogLevel;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Maps;
 
 import javax.tools.Diagnostic;
@@ -34,7 +34,8 @@ public final class DiagnosticsReporting
     {
         final LogLevel level = LEVEL_MAP.get(diagnostic.getKind());
         final ProcessingMessage message = new ProcessingMessage()
-            .message(diagnostic.getMessage(Locale.ENGLISH)).setLogLevel(level)
+            .setMessage(diagnostic.getMessage(Locale.ENGLISH))
+            .setLogLevel(level)
             .put("line", diagnostic.getLineNumber())
             .put("column", diagnostic.getColumnNumber());
 

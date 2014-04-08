@@ -1,6 +1,7 @@
 package com.github.fge.jsonschema2pojo;
 
-import com.github.fge.jsonschema.exceptions.ProcessingException;
+
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 public final class UnsupportedVersionException
     extends ProcessingException

@@ -1,7 +1,8 @@
 package com.github.fge.compiler;
 
-import com.github.fge.jsonschema.report.MessageProvider;
-import com.github.fge.jsonschema.report.ProcessingMessage;
+
+import com.github.fge.jsonschema.core.report.MessageProvider;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
 
 public final class CompilerOutput
     implements MessageProvider

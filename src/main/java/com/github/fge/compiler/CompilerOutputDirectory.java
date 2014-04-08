@@ -1,6 +1,7 @@
 package com.github.fge.compiler;
 
-import com.github.fge.jsonschema.report.ProcessingMessage;
+
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -44,7 +45,7 @@ public final class CompilerOutputDirectory
             url = baseDir.toURI().toURL();
         } catch (MalformedURLException e) {
             throw new CompilingException(new ProcessingMessage()
-                .message(CANNOT_CREATE_URI), e);
+                .setMessage(CANNOT_CREATE_URI), e);
         }
 
         /*
@@ -65,7 +66,7 @@ public final class CompilerOutputDirectory
             return classLoader.loadClass(fullClassName);
         } catch (ClassNotFoundException e) {
             throw new CompilingException(new ProcessingMessage()
-                .message(CANNOT_FIND_CLASS).put("class", fullClassName), e);
+                .setMessage(CANNOT_FIND_CLASS).put("class", fullClassName), e);
         }
     }
 }

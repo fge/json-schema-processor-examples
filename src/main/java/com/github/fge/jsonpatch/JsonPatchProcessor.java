@@ -2,12 +2,12 @@ package com.github.fge.jsonpatch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
-import com.github.fge.jsonschema.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.processing.Processor;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.core.util.ValueHolder;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
-import com.github.fge.jsonschema.processing.Processor;
-import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.util.ValueHolder;
 
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ public final class JsonPatchProcessor
         report.mergeWith(SCHEMA.validate(rawPatch));
         if (!report.isSuccess())
             throw new ProcessingException(input.newMessage()
-                .message("illegal JSON patch"));
+                .setMessage("illegal JSON patch"));
 
         try {
             final JsonPatch patch = JsonPatch.fromJson(rawPatch);
@@ -45,10 +45,10 @@ public final class JsonPatchProcessor
             return ValueHolder.hold("result", ret);
         } catch (JsonPatchException e) {
             throw new ProcessingException(input.newMessage()
-                .message("failed to apply patch"), e);
+                .setMessage("failed to apply patch"), e);
         } catch (IOException e) {
             throw new ProcessingException(input.newMessage()
-                .message("patch considered invalid but schema validated it"),
+                .setMessage("patch considered invalid but schema validated it"),
                 e);
         }
     }

@@ -3,11 +3,11 @@ package com.github.fge.jjschema;
 import com.github.fge.compiler.CompilerOutput;
 import com.github.fge.compiler.CompilerProcessor;
 import com.github.fge.compiler.CompilingException;
-import com.github.fge.jsonschema.exceptions.ProcessingException;
-import com.github.fge.jsonschema.processing.RawProcessor;
-import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.tree.SchemaTree;
-import com.github.fge.jsonschema.util.ValueHolder;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.processing.RawProcessor;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.core.tree.SchemaTree;
+import com.github.fge.jsonschema.core.util.ValueHolder;
 
 import java.io.File;
 

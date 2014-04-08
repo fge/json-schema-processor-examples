@@ -1,10 +1,10 @@
 package com.github.fge.compiler;
 
-import com.github.fge.jsonschema.exceptions.ProcessingException;
-import com.github.fge.jsonschema.processing.Processor;
-import com.github.fge.jsonschema.report.ProcessingMessage;
-import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.util.ValueHolder;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.processing.Processor;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.core.util.ValueHolder;
 import com.google.common.collect.ImmutableList;
 
 import javax.tools.JavaCompiler;
@@ -76,7 +76,7 @@ public final class CompilerProcessor
             fileObject = new FromStringFileObject(fullName, source);
         } catch (URISyntaxException e) {
             throw new CompilingException(new ProcessingMessage()
-                .message(CANNOT_BUILD_URI).put("className", fullName), e);
+                .setMessage(CANNOT_BUILD_URI).put("className", fullName), e);
         }
 
         /*

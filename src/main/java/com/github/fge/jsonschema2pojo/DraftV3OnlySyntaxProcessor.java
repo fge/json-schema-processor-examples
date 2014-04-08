@@ -1,15 +1,19 @@
 package com.github.fge.jsonschema2pojo;
 
 import com.github.fge.jsonschema.SchemaVersion;
-import com.github.fge.jsonschema.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.keyword.syntax.SyntaxProcessor;
+import com.github.fge.jsonschema.core.messages.JsonSchemaSyntaxMessageBundle;
+import com.github.fge.jsonschema.core.processing.Processor;
+import com.github.fge.jsonschema.core.processing.ProcessorMap;
+import com.github.fge.jsonschema.core.ref.JsonRef;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.core.tree.SchemaTree;
+import com.github.fge.jsonschema.core.util.ValueHolder;
 import com.github.fge.jsonschema.library.DraftV3Library;
-import com.github.fge.jsonschema.processing.Processor;
-import com.github.fge.jsonschema.processing.ProcessorMap;
-import com.github.fge.jsonschema.ref.JsonRef;
-import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.syntax.SyntaxProcessor;
-import com.github.fge.jsonschema.tree.SchemaTree;
-import com.github.fge.jsonschema.util.ValueHolder;
+import com.github.fge.jsonschema.processors.syntax.SyntaxValidator;
+import com.github.fge.msgsimple.bundle.MessageBundle;
+import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.base.Function;
 
 public final class DraftV3OnlySyntaxProcessor
@@ -30,13 +34,16 @@ public final class DraftV3OnlySyntaxProcessor
 
     public DraftV3OnlySyntaxProcessor()
     {
-        final SyntaxProcessor syntaxProcessor
-            = new SyntaxProcessor(DraftV3Library.get().getSyntaxCheckers());
+        final MessageBundle bundle
+            = MessageBundles.getBundle(JsonSchemaSyntaxMessageBundle.class);
+        final SyntaxProcessor syntaxProcessor = new SyntaxProcessor(bundle,
+            DraftV3Library.get().getSyntaxCheckers());
 
         final JsonRef draftv3
             = JsonRef.fromURI(SchemaVersion.DRAFTV3.getLocation());
 
-        final ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>> map
+        final ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
+            map
             = new ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>(FUNCTION)
                 .addEntry(draftv3, syntaxProcessor)
                 .addEntry(JsonRef.emptyRef(), syntaxProcessor)

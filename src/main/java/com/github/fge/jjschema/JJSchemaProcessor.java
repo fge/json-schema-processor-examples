@@ -1,12 +1,12 @@
 package com.github.fge.jjschema;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jsonschema.exceptions.ProcessingException;
-import com.github.fge.jsonschema.processing.RawProcessor;
-import com.github.fge.jsonschema.report.ProcessingMessage;
-import com.github.fge.jsonschema.report.ProcessingReport;
-import com.github.fge.jsonschema.tree.CanonicalSchemaTree;
-import com.github.fge.jsonschema.tree.SchemaTree;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.processing.RawProcessor;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.core.tree.CanonicalSchemaTree;
+import com.github.fge.jsonschema.core.tree.SchemaTree;
 import com.github.reinert.jjschema.JsonSchemaGenerator;
 import com.github.reinert.jjschema.SchemaGeneratorBuilder;
 
@@ -27,7 +27,7 @@ public final class JJSchemaProcessor
         throws ProcessingException
     {
         final ProcessingMessage message = newMessage(input);
-        report.debug(message.message("processing"));
+        report.debug(message.setMessage("processing"));
         final JsonNode node = GENERATOR.generateSchema(input);
         return new CanonicalSchemaTree(node);
     }

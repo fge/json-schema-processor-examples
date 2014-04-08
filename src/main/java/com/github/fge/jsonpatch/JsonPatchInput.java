@@ -1,8 +1,8 @@
 package com.github.fge.jsonpatch;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jsonschema.report.MessageProvider;
-import com.github.fge.jsonschema.report.ProcessingMessage;
+import com.github.fge.jsonschema.core.report.MessageProvider;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
 
 public final class JsonPatchInput
     implements MessageProvider

@@ -1,7 +1,8 @@
 package com.github.fge.compiler;
 
-import com.github.fge.jsonschema.exceptions.ProcessingException;
-import com.github.fge.jsonschema.report.ProcessingMessage;
+
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
 
 public final class CompilingException
     extends ProcessingException
