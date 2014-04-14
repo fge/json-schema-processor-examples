@@ -5,7 +5,7 @@ text.</p>
 
 <h1>Version</h1>
 
-<p>The current version is <b>0.6</b>.</p>
+<p>The current version is <b>0.7</b>.</p>
 
 <h1>What this is</h1>
 
