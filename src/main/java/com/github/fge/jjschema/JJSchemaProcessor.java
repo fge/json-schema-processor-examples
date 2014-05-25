@@ -7,6 +7,7 @@ import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.core.tree.CanonicalSchemaTree;
 import com.github.fge.jsonschema.core.tree.SchemaTree;
+import com.github.fge.jsonschema.core.tree.key.SchemaKey;
 import com.github.reinert.jjschema.JsonSchemaGenerator;
 import com.github.reinert.jjschema.SchemaGeneratorBuilder;
 
@@ -29,6 +30,6 @@ public final class JJSchemaProcessor
         final ProcessingMessage message = newMessage(input);
         report.debug(message.setMessage("processing"));
         final JsonNode node = GENERATOR.generateSchema(input);
-        return new CanonicalSchemaTree(node);
+        return new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
     }
 }
